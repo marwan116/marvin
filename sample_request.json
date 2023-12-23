@@ -1,0 +1,69 @@
+{
+    "model": "gpt-3.5-turbo",
+    "temperature": 0.1,
+    "tools": [
+        {
+            "type": "function",
+            "function": {
+                "name": "FormatResponse",
+                "description": "Formats the response.",
+                "parameters": {
+                    "$defs": {
+                        "Location": {
+                            "description": "Location model.",
+                            "properties": {
+                                "city": {
+                                    "description": "The inferred official name of a real city in the United States",
+                                    "title": "City",
+                                    "type": "string"
+                                },
+                                "state_abbreviation": {
+                                    "description": "The two-letter state abbreviation",
+                                    "title": "State Abbreviation",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "city",
+                                "state_abbreviation"
+                            ],
+                            "title": "Location",
+                            "type": "object"
+                        }
+                    },
+                    "description": "Formats the response.",
+                    "properties": {
+                        "data": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/$defs/Location"
+                                }
+                            ],
+                            "description": "The data to format."
+                        }
+                    },
+                    "required": [
+                        "data"
+                    ],
+                    "type": "object"
+                }
+            }
+        }
+    ],
+    "tool_choice": {
+        "type": "function",
+        "function": {
+            "name": "FormatResponse"
+        }
+    },
+    "messages": [
+        {
+            "content": "The user will provide context as text that you need to parse into a structured form. To validate your response, you must call the `FormatResponse` function. Use the provided text to extract or infer any parameters needed by `FormatResponse`, including any missing data.",
+            "role": "system"
+        },
+        {
+            "content": "The text to parse: The Big Apple",
+            "role": "user"
+        }
+    ]
+}
